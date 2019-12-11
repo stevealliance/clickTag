@@ -6,6 +6,7 @@ This just give a quick implementation, but can be extend to support all provider
 
 - [Installation](#installation)
 - [Usage](#usage)
+- [Things to look for](#things)
 
 ## Installation
 
@@ -36,6 +37,15 @@ This will start a node server you can go on http://localhost:3000 or the port re
 click on the banner it should redirect you on a google search for districtm.net website.
 
 Again this is just a overview not a full implementation.
+
+## Things
+
+First if you look at the `index` file you will see that we applied a parameters to the banner url.
+This again can be spec by you, for example, DV360 will modify the clickTag for clicktag and vice-versa.
+I invite you to use another label or key like `ex: sofiaClick= redirect URL`.
+
+You should also have a fallback if the provider does not have a redirect so you only use the url declare in your platform.
+
 
 
 
