@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        var url = "https://districtm.net";
+        /**
+         * this function only to be use for IE the API is not completed only for demo, not production ready
+         * No support for IE8
+         * @type {{prototype: URLSearchParams; new(init?: (string[][] | Record<string, string> | string | URLSearchParams)): URLSearchParams} | (function(*): {getAll: (function(*=): *[]), get: (function(*=, *=): any), values: (function(): Array), toString: (function(): *), has: (function(*): boolean), append: append})}
+         */
+        window.URLSearchParams = window.URLSearchParams || function(linkParams) {
+            var store = [];
+            var firstTrf = linkParams.split('&');
+            var secondTrf = [];
+            for ( var i = 0; i < firstTrf.length; i++ ) {
+                secondTrf.push([firstTrf[i].split('=')[0], firstTrf[i].split('=')[1].split('+')])
+            }
+
+            for(var i = 0; i < secondTrf.length; i++ ) {
+                var obj = {};
+                obj[secondTrf[i][0]] = secondTrf[i][1];
+                store.push([secondTrf[i][0], secondTrf[i][1]])
+            }
+            function values() {
+                return store;
+            }
+            function get(key, array){
+                let retValue = array ?
+                    array.find(function(info){
+                        return info[0] === key
+                    })
+                    :store.find(function(info){
+                    return info[0] === key
+                });
+
+                return retValue ?
+                    retValue[1].toString().replace(',', " "):
+                    null
+            }
+
+            function has(key) {
+                return store.filter(function(info){
+                    return info[key]
+                }).length > 0
+            }
+            function append(key, value) {
+                store.push([key, value])
+            }
+            function getAll(key) {
+                var tempVal =  store.filter(function(info){
+                    return info[0] === key
+                });
+                return tempVal.map(function(v) {
+                    return get(key, [v])
+                })
+            }
+            function toString(){
+                return store.reduce(function(str, elem, index) {
+                    str += elem[0] + '=' + elem[1].toString().replace(',', '+');
+                    if(index < (store.length -1))
+                    {
+                        str += '&'
+                    }
+                    return str;
+                }, "")
+            }
+            return {
+                has,
+                get,
+                getAll,
+                values,
+                append,
+                toString
+            }
+        };
+
+
+
+        /**
+         * @name clickTracker
+         * @type function(null)
+         * @return string
+         * */
+
+         function  clickTracker(){
+            var values;
+            values = window.location.search.replace('?', '');
+            var searchValue = new URLSearchParams(values);
+            return searchValue.get('clickTag');
+        }
+
+        /**
+         * @type function(null)
+         * @name clickTag
+         * @return null
+         */
+
+        function clickTag() {
+            window.open(clickTracker() + url, '_blank')
+        }
+
+    </script>
+</head>
+<body>
+<!-- Creative block display grey box 300x250-->
+<div onclick="clickTag()" style="width: 300px; height: 250px; background-color: grey; font-size: larger; text-align: center; vertical-align: center;">
+    <span style="padding-top: 100px; display: block;">300x250</span>
+</div>
+<!-- end creative display-->
+</body>
+</html>
